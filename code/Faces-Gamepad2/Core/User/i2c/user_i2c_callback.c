@@ -12,8 +12,8 @@
 
 static __IO uint32_t i2c_stop_timeout_delay = 0;
 
-__IO uint8_t i2c_addr_reg = 0;
-__IO uint8_t tx_prepared  = 0;
+__IO uint8_t i2c_addr_reg     = 0;
+__IO uint8_t tx_prepared      = 0;
 uint8_t g_uid[UID_REG_LENGTH] = {0};
 
 void read_uid(void)
