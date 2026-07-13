@@ -1,48 +1,25 @@
-# Product Name
+# M5Faces Gamepad3 Internal Firmware
+
+### SKU: A004-V3
 
 ## Overview
 
-### SKU:xxx
+This repository contains the source code, release firmware, and I2C control protocol for the M5Faces Gamepad3.
 
-Description of the product
+## Repository Contents
 
-## Related Link
+- `code/Faces-Gamepad2`: Gamepad application firmware for STM32F030F4
+- `code/Faces-Gamepad2-IAP`: In-application programming (IAP) firmware for STM32F030F4
+- `firmware`: Released firmware images
+- `protocol`: I2C control protocol documentation in English and Chinese
 
-- [Document & Datasheet](https://docs.m5stack.com/en/unit/product_Link)
+## Related Links
 
-## Required Libraries:
-
-- [Adafruit_BMP280_Library](https://github.com/adafruit/Required_Libraries_Link)
-
-## License
-
-- [Product Name- MIT](LICENSE)
-
-## Remaining steps(Editorial Staff Look,After following the steps, remember to delete all the content below)
-
-1. Change [clang format check path](./.github/workflows/clang-format-check.yml#L42-L47).
-2. Add License content to [LICENSE](/LICENSE).
-3. Change link on line 78 of [bug-report.yml](./.github/ISSUE_TEMPLATE/bug-report.yml#L79).
-
-```cpp
-Example
-# M5Unit-ENV
-
-## Overview
-
-### SKU:U001 & U001-B & U001-C
-
-Contains M5Stack-**UNIT ENV** series related case programs.ENV is an environmental sensor with integrated SHT30 and QMP6988 internally to detect temperature, humidity, and atmospheric pressure data.
-
-## Related Link
-
-- [Document & Datasheet](https://docs.m5stack.com/en/unit/envIII)
-
-## Required Libraries:
-
-- [Adafruit_BMP280_Library](https://github.com/adafruit/Adafruit_BMP280_Library)
+- [A004-V3 Document & Datasheet](https://docs.m5stack.com/en/products/sku/A004-V3)
+- [English I2C Control Protocol](protocol/M5Faces-Gamepad3-I2C-Control-Protocol-EN.md)
+- [Chinese I2C Control Protocol](protocol/M5Faces-Gamepad3-I2C-Control-Protocol-CN.md)
+- [Firmware v03](firmware/2026-07-10-0x03/A004-V3-Faces-Gamepad3-STM32F030F4-TAO-V03-20260710_0x8000000.hex)
 
 ## License
 
-- [M5Unit-ENV - MIT](LICENSE)
-```
+- [MIT](LICENSE)
