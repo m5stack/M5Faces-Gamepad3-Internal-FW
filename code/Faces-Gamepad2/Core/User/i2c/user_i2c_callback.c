@@ -33,6 +33,8 @@ void Slave_Complete_Callback(uint8_t *rx_data, uint16_t len)
     uint8_t tx_buf[64];
     uint8_t rx_mark[64] = {0};
 
+    tx_prepared = 0;
+
     if (len == 1) {
         if ((rx_data[0] >= UID_REG_ADDR_START) && (rx_data[0] <= UID_REG_ADDR_END)) {
             uint8_t uid_offset = rx_data[0] - UID_REG_ADDR_START;
@@ -58,10 +60,11 @@ void Slave_Complete_Callback(uint8_t *rx_data, uint16_t len)
         } else if (rx_data[0] == I2C_ADDRESS_REG_ADDR && len == 2) {
             if (rx_data[1] >= I2C_ADDR_REG_MIN && rx_data[1] <= I2C_ADDR_REG_MAX) {
                 if (i2c_addr_reg != rx_data[1]) {
-                    i2c_addr_reg = rx_data[1];
-                    set_i2c_addr(rx_data[1]);
-                    user_i2c_init();
-                    i2c1_it_enable();
+                    if (set_i2c_addr(rx_data[1])) {
+                        i2c_addr_reg = rx_data[1];
+                        user_i2c_init();
+                        i2c1_it_enable();
+                    }
                 }
             }
         }
@@ -79,11 +82,13 @@ void Slave_Complete_Callback(uint8_t *rx_data, uint16_t len)
  */
 void i2c_timeout_handler(void)
 {
+    uint32_t now = HAL_GetTick();
+
     i2c_timeout_counter = 0;
     if (i2c_stop_timeout_flag) {
-        if (i2c_stop_timeout_delay < HAL_GetTick()) {
+        if ((uint32_t)(now - i2c_stop_timeout_delay) >= 10U) {
             i2c_stop_timeout_counter++;
-            i2c_stop_timeout_delay = HAL_GetTick() + 10;
+            i2c_stop_timeout_delay = now;
         }
     }
     // If timeout counter exceeds limit, reset I2C peripheral / 若超时计数超过限制，重置 I2C 外设
@@ -92,6 +97,14 @@ void i2c_timeout_handler(void)
         LL_I2C_DisableAutoEndMode(I2C1);
         LL_I2C_Disable(I2C1);
         LL_I2C_DisableIT_ADDR(I2C1);
+
+        /* Discard the incomplete transaction before accepting a new one. */
+        ubReceiveIndex           = 0;
+        tx_prepared              = 0;
+        i2c_stop_timeout_flag    = 0;
+        i2c_stop_timeout_counter = 0;
+        i2c_stop_timeout_delay   = 0;
+
         user_i2c_init();   // Recovery initialization / 恢复初始化
         i2c1_it_enable();  // Re-enable interrupts / 重新使能中断
         HAL_Delay(500);

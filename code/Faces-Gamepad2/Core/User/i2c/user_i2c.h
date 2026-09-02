@@ -55,6 +55,12 @@ extern volatile uint32_t i2c_stop_timeout_flag;
 extern volatile uint32_t i2c_stop_timeout_counter;
 
 /**
+ * @brief I2C receive buffer index.
+ *        I2C 接收缓冲区索引。
+ */
+extern volatile uint16_t ubReceiveIndex;
+
+/**
  * @brief Initialize I2C2 peripheral in slave mode.
  *        初始化 I2C2 外设（从机模式）。
  * @note  This function configures GPIO, clock, interrupts,

@@ -81,11 +81,13 @@ void iap_set(void)
 
 void reg_init(void)
 {
-    if (get_i2c_addr() == FLASH_DEFAULT_DATA) {
+    uint8_t stored_addr = get_i2c_addr();
+
+    if ((stored_addr < I2C_ADDR_REG_MIN) || (stored_addr > I2C_ADDR_REG_MAX)) {
         i2c_addr_reg = I2C_ADDR_REG_DEFAULT;
         set_i2c_addr(I2C_ADDR_REG_DEFAULT);
     } else {
-        i2c_addr_reg = get_i2c_addr();
+        i2c_addr_reg = stored_addr;
     }
 }
 

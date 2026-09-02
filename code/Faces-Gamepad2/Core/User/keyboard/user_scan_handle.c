@@ -16,9 +16,6 @@ static uint32_t s_debounce_start = 0U;
 
 void request_event(void)
 {
-    if (!key_press) {
-        return;
-    }
     i2c1_set_send_data(&s_key, 1);
     key_press = 0;
     IRQ_CLR;

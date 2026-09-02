@@ -31,7 +31,7 @@ extern "C" {
 
 #define APPLICATION_ADDRESS (0x08001000)
 
-#define FIRMWARE_VERSION (0x03)
+#define FIRMWARE_VERSION (0x04)
 
 #ifdef __cplusplus
 }

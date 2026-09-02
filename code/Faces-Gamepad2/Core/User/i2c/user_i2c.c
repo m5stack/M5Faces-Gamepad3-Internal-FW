@@ -245,7 +245,11 @@ void i2c1_set_send_data(uint8_t *tx_ptr, uint16_t len)
  */
 void Slave_Reception_Callback(void)
 {
-    aReceiveBuffer[ubReceiveIndex++] = LL_I2C_ReceiveData8(I2C1);
+    uint8_t rx_data = LL_I2C_ReceiveData8(I2C1);
+
+    if (ubReceiveIndex < I2C_RECEIVE_BUFFER_LEN) {
+        aReceiveBuffer[ubReceiveIndex++] = rx_data;
+    }
 }
 
 /**
@@ -294,10 +298,11 @@ void I2C1_IRQHandler(void)
                 i2c1_it_enable();
             }
 
+            i2c_stop_timeout_flag = 1;
+
             if (LL_I2C_GetTransferDirection(I2C1) == LL_I2C_DIRECTION_WRITE) {
                 LL_I2C_ClearFlag_ADDR(I2C1);
                 LL_I2C_EnableIT_RX(I2C1);
-                i2c_stop_timeout_flag = 1;
             } else if (LL_I2C_GetTransferDirection(I2C1) == LL_I2C_DIRECTION_READ) {
                 if (!tx_prepared) {
                     request_event();
